@@ -1,0 +1,38 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<style>
+.s {
+    font-size: 16px;
+    padding-left: 4em;
+    padding-right: 16em;
+}
+</style>
+{{if len(reminder):}}
+<h1>
+    Hello {{=auth.user.first_name}}. Here are your reminders:
+</h1>
+
+<div class = "s">
+<table class = "table" id = "posts">
+    {{for rem in reminder:}}
+    <tr>
+        {{if request.now.date() > rem.reminder_end:}}
+        <td>
+                <b>Message: </b> {{=rem.reminder_message}} <br>
+                <b>Start Date: </b> {{=rem.reminder_start.strftime("%m/%d/%Y")}} <br>
+                <b>End Date: </b> {{=rem.reminder_end.strftime("%m/%d/%Y")}} <br>
+                <b>How Frequently: </b> {{=rem.reminder_type}} <br>
+        </td>
+        <td>
+            <form action="{{=URL('reminder_edit', args = rem.id)}}">
+                <input type="submit" value="Edit Reminder" />
+            </form>
+        </td>
+        <br>
+        {{pass}}
+    {{pass}}
+    </tr>
+</table>
+</div>
+{{pass}}

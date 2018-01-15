@@ -1,0 +1,35 @@
+{{extend 'layout.html'}}
+<style>
+.normal {
+    font-size: 16px;
+    padding-left: 4em;
+    padding-right: 16em;
+}
+
+.grayout {
+    font-size: 16px;
+    padding-left: 4em;
+    padding-right: 16em;
+    opacity: 0.6; /* Real browsers */
+    filter: alpha(opacity = 60); /* MSIE */
+}
+</style>
+
+<h1>
+    This is the format of your text message:
+</h1>
+<i>
+    Click here to change the format.
+</i>
+<br><br><br>
+
+<div class = 'normal'>
+
+Reminder:
+{{for rem in reminder:}}
+    {{if rem.disable == False:}}
+        {{=rem.reminder_message}} <br>
+    {{pass}}
+{{pass}}
+
+</div>

@@ -1,0 +1,74 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<style>
+.normal {
+    font-size: 16px;
+    padding-left: 4em;
+    padding-right: 16em;
+}
+
+.grayout {
+    font-size: 16px;
+    padding-left: 4em;
+    padding-right: 16em;
+    opacity: 0.6; /* Real browsers */
+    filter: alpha(opacity = 60); /* MSIE */
+}
+</style>
+{{if len(reminder):}}
+<h1>
+    Hello {{=auth.user.first_name}}. Here are your reminders:
+</h1>
+    {{if len(text):}}
+        {{for t in text:}}
+            <h3> The message will be sent at {{=t.time_for_message_to_be_sent}}. Click
+                <a href = "{{=URL('text_edit', args = t.id)}}">
+                    here
+                </a> to change.
+            </h3>
+            {{break}}
+        {{pass}}
+    {{else:}}
+        <h3>Please
+            <a href = "{{=URL('text_create')}}">
+                enter a time
+            </a>
+            for the message to be sent
+
+        </h3>
+    {{pass}}
+<table class = "table" id = "posts">
+    {{for rem in reminder:}}
+        <div class = "normal">
+            <tr>
+            {{if rem.reminder_end >= request.now.date():}}
+                <td>
+                        <b>Message: </b> {{=rem.reminder_message}} <br>
+                        <b>Start Date: </b> {{=rem.reminder_start.strftime("%m/%d/%Y")}} <br>
+                        <b>End Date: </b> {{=rem.reminder_end.strftime("%m/%d/%Y")}} <br>
+                        <b>How Frequently: </b> {{=rem.reminder_type}} <br>
+                </td>
+                <td>
+                    <a href = "{{=URL('reminder_edit', args = rem.id)}}">
+                        <button>
+                            Edit
+                        </button>
+                    </a>
+                    <a href = "{{=URL('reminder_edit', args = rem.id)}}">
+                        <button>
+                            Delete
+                        </button>
+                    </a>
+                    <br>
+                    {{if rem.disable == True:}}
+                        <i>This reminder is disabled. Edit to enable</i>
+                    {{pass}}
+                </td>
+            <br>
+            {{pass}}
+            </tr>
+        </div>
+    {{pass}}
+</table>
+{{pass}}
